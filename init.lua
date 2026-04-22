@@ -75,6 +75,25 @@ require("lazy").setup({
   "mbbill/undotree",
   "tpope/vim-fugitive",
 
+  -- Treesitter context (sticky function headers)
+  "nvim-treesitter/nvim-treesitter-context",
+
+  -- Commenting
+  "numToStr/Comment.nvim",
+
+  -- Auto pairs
+  {
+    "windwp/nvim-autopairs",
+    event = "InsertEnter",
+    config = true,
+  },
+
+  -- Statusline
+  {
+    "nvim-lualine/lualine.nvim",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+  },
+
   -- Optional: better LSP UI
   "folke/trouble.nvim",
 })
@@ -89,6 +108,21 @@ vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 vim.opt.smartindent = true
+
+-- Treesitter context
+require("treesitter-context").setup({
+  max_lines = 5,
+})
+
+-- Comment.nvim
+require("Comment").setup()
+
+-- Lualine
+require("lualine").setup({
+  options = {
+    theme = "catppuccin",
+  },
+})
 
 -- Mason setup
 require("mason").setup()
@@ -105,6 +139,11 @@ require("mason-lspconfig").setup({
     "clangd",
     "jdtls",
     "zls",
+    "bashls",
+    "html",
+    "cssls",
+    "jsonls",
+    "yamlls",
   },
 })
 
@@ -178,9 +217,35 @@ vim.lsp.config("zls", {
   capabilities = capabilities,
 })
 
+-- Bash
+vim.lsp.config("bashls", {
+  capabilities = capabilities,
+})
+
+-- HTML
+vim.lsp.config("html", {
+  capabilities = capabilities,
+})
+
+-- CSS
+vim.lsp.config("cssls", {
+  capabilities = capabilities,
+})
+
+-- JSON
+vim.lsp.config("jsonls", {
+  capabilities = capabilities,
+})
+
+-- YAML
+vim.lsp.config("yamlls", {
+  capabilities = capabilities,
+})
+
 vim.lsp.enable({
   "omnisharp", "lua_ls", "rust_analyzer", "pyright", "ts_ls", "gopls",
   "ocamllsp", "metals", "clangd", "jdtls", "zls",
+  "bashls", "html", "cssls", "jsonls", "yamlls",
 })
 
 -- Enable semantic tokens
