@@ -1,4 +1,4 @@
--- Neovim config with C# support and semantic highlighting
+-- Neovim config with multi-language LSP, ThePrimeagen tools, and more
 
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -94,7 +94,66 @@ require("lazy").setup({
     dependencies = { "nvim-tree/nvim-web-devicons" },
   },
 
-  -- Optional: better LSP UI
+  -- ThePrimeagen extras
+  "ThePrimeagen/refactoring.nvim",
+  {
+    "folke/zen-mode.nvim",
+    opts = { window = { width = 90 } },
+  },
+
+  -- TJ DeVries picks
+  {
+    "stevearc/oil.nvim",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+  },
+  {
+    "stevearc/conform.nvim",
+    event = "BufWritePre",
+  },
+  {
+    "j-hui/fidget.nvim",
+    opts = {},
+  },
+  { "mfussenegger/nvim-dap" },
+  {
+    "rcarriga/nvim-dap-ui",
+    dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
+  },
+
+  -- Folke picks
+  "folke/which-key.nvim",
+  {
+    "folke/flash.nvim",
+    event = "VeryLazy",
+    opts = {},
+  },
+  {
+    "folke/todo-comments.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    opts = {},
+  },
+  {
+    "folke/noice.nvim",
+    event = "VeryLazy",
+    dependencies = { "MunifTanjim/nui.nvim" },
+  },
+
+  -- Community staples
+  "lewis6991/gitsigns.nvim",
+  {
+    "kylechui/nvim-surround",
+    version = "*",
+    event = "VeryLazy",
+    config = true,
+  },
+  {
+    "lukas-reineke/indent-blankline.nvim",
+    main = "ibl",
+    opts = {},
+  },
+  "stevearc/dressing.nvim",
+
+  -- Better LSP UI
   "folke/trouble.nvim",
 })
 
@@ -123,6 +182,66 @@ require("lualine").setup({
     theme = "catppuccin",
   },
 })
+
+-- Oil (file explorer as buffer)
+require("oil").setup()
+
+-- Conform (auto-formatting)
+require("conform").setup({
+  format_on_save = {
+    timeout_ms = 500,
+    lsp_format = "fallback",
+  },
+  formatters_by_ft = {
+    lua = { "stylua" },
+    python = { "black" },
+    javascript = { "prettier" },
+    typescript = { "prettier" },
+    html = { "prettier" },
+    css = { "prettier" },
+    json = { "prettier" },
+    yaml = { "prettier" },
+    markdown = { "prettier" },
+    go = { "gofmt" },
+    rust = { "rustfmt" },
+    c = { "clang-format" },
+    cpp = { "clang-format" },
+    java = { "clang-format" },
+    ocaml = { "ocamlformat" },
+    scala = { "scalafmt" },
+    zig = { "zigfmt" },
+    sh = { "shfmt" },
+    bash = { "shfmt" },
+  },
+})
+
+-- Gitsigns
+require("gitsigns").setup()
+
+-- Which-key
+require("which-key").setup()
+
+-- Noice
+require("noice").setup({
+  lsp = {
+    override = {
+      ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+      ["vim.lsp.util.stylize_markdown"] = true,
+      ["cmp.entry.get_documentation"] = true,
+    },
+  },
+  presets = {
+    bottom_search = true,
+    command_palette = true,
+    long_message_to_split = true,
+  },
+})
+
+-- Refactoring
+require("refactoring").setup()
+
+-- DAP UI
+require("dapui").setup()
 
 -- Mason setup
 require("mason").setup()
@@ -313,10 +432,45 @@ vim.keymap.set("n", "<C-e>", function() harpoon.ui:toggle_quick_menu(harpoon:lis
 vim.keymap.set("n", "<C-h>", function() harpoon:list():select(1) end)
 vim.keymap.set("n", "<C-t>", function() harpoon:list():select(2) end)
 vim.keymap.set("n", "<C-n>", function() harpoon:list():select(3) end)
-vim.keymap.set("n", "<C-s>", function() harpoon:list():select(4) end)
+vim.keymap.set("n", "<C-j>", function() harpoon:list():select(4) end)
 
 -- Undotree
 vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle)
 
 -- Fugitive
 vim.keymap.set("n", "<leader>gs", vim.cmd.Git)
+
+-- Oil
+vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
+
+-- Zen mode
+vim.keymap.set("n", "<leader>zz", "<CMD>ZenMode<CR>", { desc = "Zen mode" })
+
+-- Flash
+vim.keymap.set({ "n", "x", "o" }, "s", function() require("flash").jump() end, { desc = "Flash" })
+vim.keymap.set({ "n", "x", "o" }, "S", function() require("flash").treesitter() end, { desc = "Flash Treesitter" })
+
+-- Refactoring
+vim.keymap.set("x", "<leader>re", function() require("refactoring").refactor("Extract Function") end, { desc = "Extract function" })
+vim.keymap.set("x", "<leader>rv", function() require("refactoring").refactor("Extract Variable") end, { desc = "Extract variable" })
+vim.keymap.set("n", "<leader>ri", function() require("refactoring").refactor("Inline Variable") end, { desc = "Inline variable" })
+
+-- Gitsigns
+vim.keymap.set("n", "]h", function() require("gitsigns").next_hunk() end, { desc = "Next hunk" })
+vim.keymap.set("n", "[h", function() require("gitsigns").prev_hunk() end, { desc = "Prev hunk" })
+vim.keymap.set("n", "<leader>hp", function() require("gitsigns").preview_hunk() end, { desc = "Preview hunk" })
+vim.keymap.set("n", "<leader>hb", function() require("gitsigns").blame_line() end, { desc = "Blame line" })
+
+-- DAP (debugger)
+vim.keymap.set("n", "<leader>db", function() require("dap").toggle_breakpoint() end, { desc = "Toggle breakpoint" })
+vim.keymap.set("n", "<leader>dc", function() require("dap").continue() end, { desc = "Debug continue" })
+vim.keymap.set("n", "<leader>do", function() require("dap").step_over() end, { desc = "Step over" })
+vim.keymap.set("n", "<leader>di", function() require("dap").step_into() end, { desc = "Step into" })
+vim.keymap.set("n", "<leader>du", function() require("dapui").toggle() end, { desc = "Toggle DAP UI" })
+
+-- Trouble (diagnostics)
+vim.keymap.set("n", "<leader>xx", "<CMD>Trouble diagnostics toggle<CR>", { desc = "Diagnostics" })
+vim.keymap.set("n", "<leader>xd", "<CMD>Trouble diagnostics toggle filter.buf=0<CR>", { desc = "Buffer diagnostics" })
+
+-- Todo comments
+vim.keymap.set("n", "<leader>xt", "<CMD>TodoTrouble<CR>", { desc = "Todo list" })
