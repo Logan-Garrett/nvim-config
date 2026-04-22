@@ -44,6 +44,20 @@ require("lazy").setup({
       vim.treesitter.language.add("typescript")
       vim.treesitter.language.add("javascript")
       vim.treesitter.language.add("go")
+      vim.treesitter.language.add("ocaml")
+      vim.treesitter.language.add("scala")
+      vim.treesitter.language.add("c")
+      vim.treesitter.language.add("cpp")
+      vim.treesitter.language.add("java")
+      vim.treesitter.language.add("zig")
+      vim.treesitter.language.add("bash")
+      vim.treesitter.language.add("html")
+      vim.treesitter.language.add("css")
+      vim.treesitter.language.add("json")
+      vim.treesitter.language.add("yaml")
+      vim.treesitter.language.add("toml")
+      vim.treesitter.language.add("dockerfile")
+      vim.treesitter.language.add("markdown")
     end,
   },
 
@@ -86,6 +100,11 @@ require("mason-lspconfig").setup({
     "pyright",
     "ts_ls",
     "gopls",
+    "ocamllsp",
+    "metals",
+    "clangd",
+    "jdtls",
+    "zls",
   },
 })
 
@@ -134,7 +153,35 @@ vim.lsp.config("gopls", {
   capabilities = capabilities,
 })
 
-vim.lsp.enable({ "omnisharp", "lua_ls", "rust_analyzer", "pyright", "ts_ls", "gopls" })
+-- OCaml
+vim.lsp.config("ocamllsp", {
+  capabilities = capabilities,
+})
+
+-- Scala
+vim.lsp.config("metals", {
+  capabilities = capabilities,
+})
+
+-- C / C++
+vim.lsp.config("clangd", {
+  capabilities = capabilities,
+})
+
+-- Java
+vim.lsp.config("jdtls", {
+  capabilities = capabilities,
+})
+
+-- Zig
+vim.lsp.config("zls", {
+  capabilities = capabilities,
+})
+
+vim.lsp.enable({
+  "omnisharp", "lua_ls", "rust_analyzer", "pyright", "ts_ls", "gopls",
+  "ocamllsp", "metals", "clangd", "jdtls", "zls",
+})
 
 -- Enable semantic tokens
 vim.api.nvim_create_autocmd("LspAttach", {
