@@ -93,10 +93,7 @@ require("lazy").setup({
   },
 
   -- Statusline
-  {
-    "nvim-lualine/lualine.nvim",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
-  },
+  "nvim-lualine/lualine.nvim",
 
   -- ThePrimeagen extras
   {
@@ -113,10 +110,7 @@ require("lazy").setup({
   },
 
   -- TJ DeVries picks
-  {
-    "stevearc/oil.nvim",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
-  },
+  "stevearc/oil.nvim",
   {
     "stevearc/conform.nvim",
     event = "BufWritePre",
@@ -191,6 +185,7 @@ require("Comment").setup()
 require("lualine").setup({
   options = {
     theme = "catppuccin",
+    icons_enabled = false,
   },
 })
 
