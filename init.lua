@@ -40,8 +40,26 @@ require("lazy").setup({
       vim.treesitter.language.add("lua")
       vim.treesitter.language.add("rust")
       vim.treesitter.language.add("vim")
+      vim.treesitter.language.add("python")
+      vim.treesitter.language.add("typescript")
+      vim.treesitter.language.add("javascript")
+      vim.treesitter.language.add("go")
     end,
   },
+
+  -- ThePrimeagen's tools
+  {
+    "ThePrimeagen/harpoon",
+    branch = "harpoon2",
+    dependencies = { "nvim-lua/plenary.nvim" },
+  },
+  {
+    "nvim-telescope/telescope.nvim",
+    tag = "0.1.8",
+    dependencies = { "nvim-lua/plenary.nvim" },
+  },
+  "mbbill/undotree",
+  "tpope/vim-fugitive",
 
   -- Optional: better LSP UI
   "folke/trouble.nvim",
@@ -61,7 +79,14 @@ vim.opt.smartindent = true
 -- Mason setup
 require("mason").setup()
 require("mason-lspconfig").setup({
-  ensure_installed = { "omnisharp" },
+  ensure_installed = {
+    "omnisharp",
+    "lua_ls",
+    "rust_analyzer",
+    "pyright",
+    "ts_ls",
+    "gopls",
+  },
 })
 
 -- LSP Setup with semantic highlighting
@@ -78,7 +103,38 @@ vim.lsp.config("omnisharp", {
   }
 })
 
-vim.lsp.enable("omnisharp")
+-- Lua
+vim.lsp.config("lua_ls", {
+  capabilities = capabilities,
+  settings = {
+    Lua = {
+      diagnostics = { globals = { "vim" } },
+      workspace = { library = vim.api.nvim_get_runtime_file("", true) },
+    }
+  }
+})
+
+-- Rust
+vim.lsp.config("rust_analyzer", {
+  capabilities = capabilities,
+})
+
+-- Python
+vim.lsp.config("pyright", {
+  capabilities = capabilities,
+})
+
+-- TypeScript / JavaScript
+vim.lsp.config("ts_ls", {
+  capabilities = capabilities,
+})
+
+-- Go
+vim.lsp.config("gopls", {
+  capabilities = capabilities,
+})
+
+vim.lsp.enable({ "omnisharp", "lua_ls", "rust_analyzer", "pyright", "ts_ls", "gopls" })
 
 -- Enable semantic tokens
 vim.api.nvim_create_autocmd("LspAttach", {
@@ -127,3 +183,28 @@ vim.keymap.set("n", "gd", vim.lsp.buf.definition, { noremap = true })
 vim.keymap.set("n", "K", vim.lsp.buf.hover, { noremap = true })
 vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { noremap = true })
 vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { noremap = true })
+
+-- Telescope
+local builtin = require("telescope.builtin")
+vim.keymap.set("n", "<leader>pf", builtin.find_files, {})
+vim.keymap.set("n", "<C-p>", builtin.git_files, {})
+vim.keymap.set("n", "<leader>ps", function()
+  builtin.grep_string({ search = vim.fn.input("Grep > ") })
+end)
+vim.keymap.set("n", "<leader>lg", builtin.live_grep, {})
+
+-- Harpoon
+local harpoon = require("harpoon")
+harpoon:setup()
+vim.keymap.set("n", "<leader>a", function() harpoon:list():add() end)
+vim.keymap.set("n", "<C-e>", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
+vim.keymap.set("n", "<C-h>", function() harpoon:list():select(1) end)
+vim.keymap.set("n", "<C-t>", function() harpoon:list():select(2) end)
+vim.keymap.set("n", "<C-n>", function() harpoon:list():select(3) end)
+vim.keymap.set("n", "<C-s>", function() harpoon:list():select(4) end)
+
+-- Undotree
+vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle)
+
+-- Fugitive
+vim.keymap.set("n", "<leader>gs", vim.cmd.Git)
