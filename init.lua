@@ -95,7 +95,14 @@ require("lazy").setup({
   },
 
   -- ThePrimeagen extras
-  "ThePrimeagen/refactoring.nvim",
+  {
+    "ThePrimeagen/refactoring.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+    },
+    lazy = true,
+  },
   {
     "folke/zen-mode.nvim",
     opts = { window = { width = 90 } },
@@ -236,9 +243,6 @@ require("noice").setup({
     long_message_to_split = true,
   },
 })
-
--- Refactoring
-require("refactoring").setup()
 
 -- DAP UI
 require("dapui").setup()
@@ -450,10 +454,17 @@ vim.keymap.set("n", "<leader>zz", "<CMD>ZenMode<CR>", { desc = "Zen mode" })
 vim.keymap.set({ "n", "x", "o" }, "s", function() require("flash").jump() end, { desc = "Flash" })
 vim.keymap.set({ "n", "x", "o" }, "S", function() require("flash").treesitter() end, { desc = "Flash Treesitter" })
 
--- Refactoring
-vim.keymap.set("x", "<leader>re", function() require("refactoring").refactor("Extract Function") end, { desc = "Extract function" })
-vim.keymap.set("x", "<leader>rv", function() require("refactoring").refactor("Extract Variable") end, { desc = "Extract variable" })
-vim.keymap.set("n", "<leader>ri", function() require("refactoring").refactor("Inline Variable") end, { desc = "Inline variable" })
+-- Refactoring (lazy-loaded)
+local refactoring_loaded = false
+local function ensure_refactoring()
+  if not refactoring_loaded then
+    require("refactoring").setup()
+    refactoring_loaded = true
+  end
+end
+vim.keymap.set("x", "<leader>re", function() ensure_refactoring(); require("refactoring").refactor("Extract Function") end, { desc = "Extract function" })
+vim.keymap.set("x", "<leader>rv", function() ensure_refactoring(); require("refactoring").refactor("Extract Variable") end, { desc = "Extract variable" })
+vim.keymap.set("n", "<leader>ri", function() ensure_refactoring(); require("refactoring").refactor("Inline Variable") end, { desc = "Inline variable" })
 
 -- Gitsigns
 vim.keymap.set("n", "]h", function() require("gitsigns").next_hunk() end, { desc = "Next hunk" })
