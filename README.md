@@ -50,28 +50,83 @@ C# (omnisharp), Lua (lua_ls), Rust (rust_analyzer), Python (pyright), TypeScript
 
 ## Keybindings
 
-Leader is `\` (default).
+Leader is `<space>`.
+
+### Built-in Vim Motions
+
+#### Movement
+| Key | Action |
+|-----|--------|
+| `w` / `b` | Word forward / back |
+| `W` / `B` | WORD forward / back (skips punctuation) |
+| `f<char>` / `F<char>` | Jump to char on line (`;` to repeat) |
+| `0` / `$` | Start / end of line |
+| `^` | First non-blank character |
+| `{` / `}` | Jump between blank lines |
+| `gg` / `G` | Top / bottom of file |
+| `<number>G` | Jump to line number |
+| `%` | Jump to matching bracket |
+| `*` / `#` | Search word under cursor forward / backward |
+
+#### Editing
+| Key | Action |
+|-----|--------|
+| `ciw` | Change inner word |
+| `ci"` / `ci(` / `ci{` | Change inside quotes / parens / braces |
+| `di"` / `da"` | Delete inside / around quotes |
+| `viw` / `vi"` | Select inside word / quotes |
+| `yiw` | Yank inner word |
+| `p` / `P` | Paste after / before cursor |
+| `o` / `O` | New line below / above + insert mode |
+| `A` / `I` | Insert at end / start of line |
+| `.` | Repeat last change |
+| `~` | Toggle case |
+| `>>` / `<<` | Indent / dedent line |
+| `<C-a>` / `<C-x>` | Increment / decrement number |
+
+#### Visual Mode
+| Key | Action |
+|-----|--------|
+| `v` | Character select |
+| `V` | Line select |
+| `<C-v>` | Block select (multi-line editing) |
+
+### Prime's Custom Remaps
+
+| Key | Action |
+|-----|--------|
+| `<C-d>` / `<C-u>` | Half page down / up (cursor stays centered) |
+| `n` / `N` | Next / prev search result (centered) |
+| `J` | Join lines (cursor stays in place) |
+| `J` / `K` (visual) | Move selected lines down / up |
+| `<space>p` (visual) | Paste over selection without losing register |
+| `<space>y` | Yank to system clipboard |
+| `<space>Y` | Yank line to system clipboard |
+| `<space>d` | Delete to void (don't pollute yank register) |
+| `<space>s` | Replace word under cursor (whole file) |
+| `<space>x` | Make current file executable |
+| `Q` | Disabled (prevents accidental ex mode) |
 
 ### LSP
 | Key | Action |
 |-----|--------|
 | `gd` | Go to definition |
 | `K` | Hover docs |
-| `<leader>rn` | Rename symbol |
-| `<leader>ca` | Code action |
+| `<space>rn` | Rename symbol |
+| `<space>ca` | Code action |
 
 ### Telescope
 | Key | Action |
 |-----|--------|
-| `<leader>pf` | Find files |
+| `<space>pf` | Find files |
 | `<C-p>` | Git files |
-| `<leader>ps` | Grep string |
-| `<leader>lg` | Live grep |
+| `<space>ps` | Grep string |
+| `<space>lg` | Live grep |
 
 ### Harpoon
 | Key | Action |
 |-----|--------|
-| `<leader>a` | Add file |
+| `<space>a` | Add file |
 | `<C-e>` | Toggle menu |
 | `<C-h>` | Slot 1 |
 | `<C-t>` | Slot 2 |
@@ -91,36 +146,43 @@ Leader is `\` (default).
 ### Git
 | Key | Action |
 |-----|--------|
-| `<leader>gs` | Fugitive (git status) |
+| `<space>gs` | Fugitive (git status) |
 | `]h` / `[h` | Next / prev hunk |
-| `<leader>hp` | Preview hunk |
-| `<leader>hb` | Blame line |
+| `<space>hp` | Preview hunk |
+| `<space>hb` | Blame line |
 
 ### Refactoring
 | Key | Action |
 |-----|--------|
-| `<leader>re` | Extract function (visual) |
-| `<leader>rv` | Extract variable (visual) |
-| `<leader>ri` | Inline variable |
+| `<space>re` | Extract function (visual) |
+| `<space>rv` | Extract variable (visual) |
+| `<space>ri` | Inline variable |
 
 ### Debugger
 | Key | Action |
 |-----|--------|
-| `<leader>db` | Toggle breakpoint |
-| `<leader>dc` | Continue |
-| `<leader>do` | Step over |
-| `<leader>di` | Step into |
-| `<leader>du` | Toggle DAP UI |
+| `<space>db` | Toggle breakpoint |
+| `<space>dc` | Continue |
+| `<space>do` | Step over |
+| `<space>di` | Step into |
+| `<space>du` | Toggle DAP UI |
 
 ### Diagnostics
 | Key | Action |
 |-----|--------|
-| `<leader>xx` | All diagnostics |
-| `<leader>xd` | Buffer diagnostics |
-| `<leader>xt` | Todo list |
+| `<space>xx` | All diagnostics |
+| `<space>xd` | Buffer diagnostics |
+| `<space>xt` | Todo list |
 
 ### Other
 | Key | Action |
 |-----|--------|
-| `<leader>u` | Undotree |
-| `<leader>zz` | Zen mode |
+| `<space>u` | Undotree |
+| `<space>zz` | Zen mode |
+
+## Tips
+
+- **Think verb + noun**: `d` = delete, `c` = change, `y` = yank, `v` = select. Combine with `iw` (inner word), `i"` (inner quotes), `ap` (around paragraph), `$` (to end), etc.
+- **Press `<space>` and wait** for which-key to show all available bindings.
+- **Use marks**: `ma` sets mark `a`, `'a` jumps back to it.
+- Built-in `:Tutor` for vim motion practice.
