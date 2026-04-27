@@ -35,6 +35,14 @@ require("lazy").setup({
   "L3MON4D3/LuaSnip",
   "saadparwaiz1/cmp_luasnip",
 
+  -- ChainBuild
+  {
+    "Logan-Garrett/chainbuild.nvim",
+    config = function()
+      require("chainbuild").setup()
+    end,
+  },
+
   -- Treesitter
   {
     "nvim-treesitter/nvim-treesitter",
@@ -447,7 +455,7 @@ cmp.setup({
   }),
   sources = cmp.config.sources({
     { name = "nvim_lsp" },
-    { name = "luasnip" },
+{ name = "luasnip" },
   }, {
     { name = "buffer" },
   }),
@@ -489,6 +497,7 @@ vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
 
 -- Zen mode
 vim.keymap.set("n", "<leader>zz", "<CMD>ZenMode<CR>", { desc = "Zen mode" })
+
 
 -- Flash
 vim.keymap.set({ "n", "x", "o" }, "s", function() require("flash").jump() end, { desc = "Flash" })
