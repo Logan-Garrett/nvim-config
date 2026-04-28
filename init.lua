@@ -239,7 +239,11 @@ require("lualine").setup({
 })
 
 -- Oil (file explorer as buffer)
-require("oil").setup()
+require("oil").setup({
+  view_options = {
+    show_hidden = true,
+  },
+})
 
 -- Conform (auto-formatting)
 require("conform").setup({
