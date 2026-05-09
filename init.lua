@@ -168,6 +168,7 @@ require("lazy").setup({
 
   -- Better LSP UI
   "folke/trouble.nvim",
+
 })
 
 -- Color scheme
@@ -380,6 +381,20 @@ vim.lsp.config("metals", {
 -- C / C++
 vim.lsp.config("clangd", {
   capabilities = capabilities,
+  cmd = {
+    "clangd",
+    "--background-index",
+    "--clang-tidy",
+    "--header-insertion=iwyu",
+    "--completion-style=detailed",
+    "--function-arg-placeholders",
+    "--fallback-style=llvm",
+  },
+  init_options = {
+    usePlaceholders = true,
+    completeUnimported = true,
+    clangdFileStatus = true,
+  },
 })
 
 -- Java
@@ -459,7 +474,7 @@ cmp.setup({
   }),
   sources = cmp.config.sources({
     { name = "nvim_lsp" },
-{ name = "luasnip" },
+    { name = "luasnip" },
   }, {
     { name = "buffer" },
   }),
@@ -525,12 +540,55 @@ vim.keymap.set("n", "[h", function() require("gitsigns").prev_hunk() end, { desc
 vim.keymap.set("n", "<leader>hp", function() require("gitsigns").preview_hunk() end, { desc = "Preview hunk" })
 vim.keymap.set("n", "<leader>hb", function() require("gitsigns").blame_line() end, { desc = "Blame line" })
 
--- DAP (debugger)
-vim.keymap.set("n", "<leader>db", function() require("dap").toggle_breakpoint() end, { desc = "Toggle breakpoint" })
-vim.keymap.set("n", "<leader>dc", function() require("dap").continue() end, { desc = "Debug continue" })
-vim.keymap.set("n", "<leader>do", function() require("dap").step_over() end, { desc = "Step over" })
-vim.keymap.set("n", "<leader>di", function() require("dap").step_into() end, { desc = "Step into" })
-vim.keymap.set("n", "<leader>du", function() require("dapui").toggle() end, { desc = "Toggle DAP UI" })
+-- DAP (debugger) — C/C++ via codelldb
+local dap = require("dap")
+local dapui = require("dapui")
+dapui.setup()
+
+-- Auto open/close DAP UI
+dap.listeners.after.event_initialized["dapui_config"] = function() dapui.open() end
+dap.listeners.before.event_terminated["dapui_config"] = function() dapui.close() end
+dap.listeners.before.event_exited["dapui_config"] = function() dapui.close() end
+
+-- codelldb adapter (installed by Mason)
+dap.adapters.codelldb = {
+  type = "server",
+  port = "${port}",
+  executable = {
+    command = vim.fn.stdpath("data") .. "/mason/bin/codelldb",
+    args = { "--port", "${port}" },
+  },
+}
+
+-- C/C++ debug configurations
+dap.configurations.c = {
+  {
+    name = "Launch (C)",
+    type = "codelldb",
+    request = "launch",
+    program = function()
+      return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
+    end,
+    cwd = "${workspaceFolder}",
+    stopOnEntry = false,
+    args = function()
+      local input = vim.fn.input("Arguments: ")
+      return input ~= "" and vim.split(input, " ") or {}
+    end,
+  },
+}
+dap.configurations.cpp = dap.configurations.c
+
+vim.keymap.set("n", "<leader>db", function() dap.toggle_breakpoint() end, { desc = "Toggle breakpoint" })
+vim.keymap.set("n", "<leader>dB", function() dap.set_breakpoint(vim.fn.input("Condition: ")) end, { desc = "Conditional breakpoint" })
+vim.keymap.set("n", "<leader>dc", function() dap.continue() end, { desc = "Debug continue" })
+vim.keymap.set("n", "<leader>do", function() dap.step_over() end, { desc = "Step over" })
+vim.keymap.set("n", "<leader>di", function() dap.step_into() end, { desc = "Step into" })
+vim.keymap.set("n", "<leader>dO", function() dap.step_out() end, { desc = "Step out" })
+vim.keymap.set("n", "<leader>dr", function() dap.repl.open() end, { desc = "Open REPL" })
+vim.keymap.set("n", "<leader>dl", function() dap.run_last() end, { desc = "Run last" })
+vim.keymap.set("n", "<leader>du", function() dapui.toggle() end, { desc = "Toggle DAP UI" })
+vim.keymap.set("n", "<leader>dt", function() dap.terminate() end, { desc = "Terminate" })
 
 -- Trouble (diagnostics)
 vim.keymap.set("n", "<leader>xx", "<CMD>Trouble diagnostics toggle<CR>", { desc = "Diagnostics" })
