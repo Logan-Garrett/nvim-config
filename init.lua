@@ -189,6 +189,13 @@ vim.opt.hlsearch = false
 vim.opt.incsearch = true
 vim.opt.undofile = true
 
+-- Auto-reload files changed externally (e.g. by Claude Code)
+vim.opt.autoread = true
+vim.api.nvim_create_autocmd({"FocusGained", "BufEnter", "CursorHold", "CursorHoldI"}, {
+  group = vim.api.nvim_create_augroup("AutoReload", { clear = true }),
+  command = "checktime",
+})
+
 -- Prime's remaps
 
 -- Move selected lines up/down in visual mode
@@ -320,6 +327,7 @@ require("mason-lspconfig").setup({
     "cssls",
     "jsonls",
     "yamlls",
+    "ltex",
   },
 })
 
@@ -432,10 +440,22 @@ vim.lsp.config("yamlls", {
   capabilities = capabilities,
 })
 
+-- LTeX (grammar/spelling/dictionary via LanguageTool)
+vim.lsp.config("ltex", {
+  capabilities = capabilities,
+  filetypes = { "markdown", "text", "latex", "tex", "restructuredtext", "gitcommit" },
+  settings = {
+    ltex = {
+      language = "en-US",
+    },
+  },
+})
+
 vim.lsp.enable({
   "omnisharp", "lua_ls", "rust_analyzer", "pyright", "ts_ls", "gopls",
   "ocamllsp", "metals", "clangd", "jdtls", "zls",
   "bashls", "html", "cssls", "jsonls", "yamlls",
+  "ltex",
 })
 
 -- Enable semantic tokens
