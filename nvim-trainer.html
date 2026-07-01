@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>nvim-navigator</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #1e1e2e;
+  color: #cdd6f4;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+  font-size: 14px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  gap: 10px;
+}
+
+.game-wrap {
+  width: 100%;
+  max-width: 860px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.title {
+  color: #89b4fa;
+  font-size: 18px;
+  letter-spacing: 1px;
+}
+
+.subtitle {
+  color: #6c7086;
+  font-size: 11px;
+  margin-top: 2px;
+}
+
+.score-area {
+  text-align: right;
+  font-size: 12px;
+  color: #6c7086;
+}
+
+.score-num {
+  color: #a6e3a1;
+  font-size: 16px;
+}
+
+.progress-bar {
+  height: 2px;
+  background: #313244;
+  border-radius: 2px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #89b4fa;
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+
+.challenge-box {
+  background: #181825;
+  border: 1px solid #313244;
+  border-radius: 6px;
+  padding: 10px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  min-height: 52px;
+}
+
+.challenge-label {
+  color: #6c7086;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  margin-bottom: 4px;
+}
+
+.challenge-text {
+  color: #f9e2af;
+  font-size: 14px;
+}
+
+.hint-btn {
+  background: transparent;
+  color: #6c7086;
+  border: 1px solid #45475a;
+  padding: 4px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 11px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.hint-btn:hover { color: #cba6f7; border-color: #cba6f7; }
+
+/* Editor */
+.editor-wrap {
+  border: 1px solid #313244;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.tabline {
+  background: #181825;
+  padding: 5px 14px;
+  font-size: 12px;
+  color: #6c7086;
+  border-bottom: 1px solid #313244;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tabline-file {
+  color: #cdd6f4;
+  background: #1e1e2e;
+  padding: 2px 10px;
+  border-radius: 3px 3px 0 0;
+}
+
+.editor-body {
+  display: flex;
+  max-height: 340px;
+  overflow-y: auto;
+  background: #1e1e2e;
+  scrollbar-width: thin;
+  scrollbar-color: #313244 transparent;
+}
+
+.line-nums {
+  padding: 6px 10px 6px 14px;
+  color: #45475a;
+  text-align: right;
+  user-select: none;
+  min-width: 44px;
+  line-height: 1.65;
+  flex-shrink: 0;
+}
+
+.line-nums .ln-active {
+  color: #cdd6f4;
+}
+
+.code-lines {
+  padding: 6px 16px;
+  flex: 1;
+  white-space: pre;
+  line-height: 1.65;
+  overflow-x: auto;
+}
+
+.code-line {
+  display: block;
+}
+
+.cursor-char {
+  background: #cdd6f4;
+  color: #1e1e2e;
+  border-radius: 1px;
+}
+
+.active-line {
+  background: rgba(255,255,255,0.03);
+}
+
+/* Statusline */
+.statusline {
+  background: #89b4fa;
+  color: #1e1e2e;
+  padding: 2px 14px;
+  font-size: 12px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Cmdline */
+.cmdline {
+  background: #1e1e2e;
+  border-top: 1px solid #313244;
+  padding: 5px 14px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.cmdline-prompt {
+  color: #cdd6f4;
+  min-width: 8px;
+}
+
+#cmd-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #cdd6f4;
+  font-family: inherit;
+  font-size: 14px;
+  flex: 1;
+  caret-color: #89b4fa;
+}
+
+#cmd-input::placeholder {
+  color: #45475a;
+  font-size: 12px;
+}
+
+/* Feedback */
+.feedback {
+  font-size: 12px;
+  min-height: 26px;
+  padding: 4px 14px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.15s;
+}
+
+.feedback.success { background: #1e3a2a; color: #a6e3a1; border: 1px solid #2a5a3a; }
+.feedback.error   { background: #3a1e1e; color: #f38ba8; border: 1px solid #5a2a2a; }
+.feedback.hint    { background: #2a2a1e; color: #f9e2af; border: 1px solid #5a5a2a; }
+.feedback.empty   { background: transparent; }
+
+/* Finish screen */
+.finish {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.finish-score {
+  font-size: 56px;
+  color: #a6e3a1;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.finish-label {
+  color: #6c7086;
+  font-size: 13px;
+  margin-bottom: 20px;
+}
+
+.commands-learned {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.cmd-badge {
+  background: #313244;
+  color: #89b4fa;
+  border: 1px solid #45475a;
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-size: 13px;
+}
+
+.play-again {
+  background: #89b4fa;
+  color: #1e1e2e;
+  border: none;
+  padding: 9px 24px;
+  border-radius: 5px;
+  font-family: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.play-again:hover { background: #b4befe; }
+</style>
+</head>
+<body>
+
+<div class="game-wrap" id="game">
+  <div class="header">
+    <div>
+      <div class="title">nvim-navigator</div>
+      <div class="subtitle">learn vim motions interactively</div>
+    </div>
+    <div class="score-area">
+      <div>score</div>
+      <div><span class="score-num" id="score">0</span><span style="color:#45475a"> / 10</span></div>
+    </div>
+  </div>
+
+  <div class="progress-bar">
+    <div class="progress-fill" id="progress" style="width:0%"></div>
+  </div>
+
+  <div class="challenge-box">
+    <div style="flex:1">
+      <div class="challenge-label">challenge <span id="ch-num">1</span> of 10</div>
+      <div class="challenge-text" id="ch-text"></div>
+    </div>
+    <button class="hint-btn" onclick="showHint()">hint</button>
+  </div>
+
+  <div class="editor-wrap">
+    <div class="tabline">
+      <span class="tabline-file">fibonacci.py</span>
+      <span style="margin-left:auto;font-size:11px">python</span>
+    </div>
+    <div class="editor-body" id="editor-body">
+      <div class="line-nums" id="line-nums"></div>
+      <div class="code-lines" id="code-lines"></div>
+    </div>
+    <div class="statusline">
+      <span>NORMAL</span>
+      <span id="pos">1:1</span>
+    </div>
+    <div class="cmdline">
+      <span class="cmdline-prompt" id="prompt"></span>
+      <input id="cmd-input" type="text" placeholder="type a vim command and press Enter" autocomplete="off" spellcheck="false" />
+    </div>
+  </div>
+
+  <div class="feedback empty" id="feedback"></div>
+</div>
+
+<script>
+const LINES = [
+  "def calculate_fibonacci(n):",
+  "    if n <= 0:",
+  "        return []",
+  "    elif n == 1:",
+  "        return [0]",
+  "    elif n == 2:",
+  "        return [0, 1]",
+  "",
+  "    sequence = [0, 1]",
+  "    for i in range(2, n):",
+  "        next_val = sequence[i-1] + sequence[i-2]",
+  "        sequence.append(next_val)",
+  "",
+  "    return sequence",
+  "",
+  "def is_prime(number):",
+  "    if number < 2:",
+  "        return False",
+  "    for divisor in range(2, int(number**0.5) + 1):",
+  "        if number % divisor == 0:",
+  "            return False",
+  "    return True",
+  "",
+  "class DataProcessor:",
+  "    def __init__(self, data):",
+  "        self.data = data",
+  "        self.results = []",
+  "",
+  "    def process(self):",
+  "        for item in self.data:",
+];
+
+// find first non-whitespace col on a line
+function firstNonWs(lineIdx) {
+  const s = LINES[lineIdx];
+  const i = s.search(/\S/);
+  return i === -1 ? 0 : i;
+}
+
+// next word start (w motion)
+function nextWordStart(lineIdx, col) {
+  const s = LINES[lineIdx];
+  let i = col;
+  if (/\w/.test(s[i])) {
+    while (i < s.length && /\w/.test(s[i])) i++;
+  } else if (/\S/.test(s[i])) {
+    while (i < s.length && /[^\w\s]/.test(s[i])) i++;
+  }
+  while (i < s.length && /\s/.test(s[i])) i++;
+  return Math.min(i, s.length - 1);
+}
+
+const challenges = [
+  {
+    text: 'Jump to line 10 using a colon command',
+    hint: 'In normal mode, type :10 then press Enter',
+    start: { l: 0, c: 0 },
+    target: { l: 9, c: 0 },
+    valid: cmd => cmd === ':10',
+  },
+  {
+    text: 'Jump to line 17 using the G command',
+    hint: 'Type 17G — a number followed by capital G',
+    start: { l: 0, c: 0 },
+    target: { l: 16, c: 0 },
+    valid: cmd => cmd === '17G',
+  },
+  {
+    text: 'Go to the very last line of the file',
+    hint: 'Capital G with no number goes to the last line',
+    start: { l: 0, c: 0 },
+    target: { l: LINES.length - 1, c: 0 },
+    valid: cmd => cmd === 'G',
+  },
+  {
+    text: 'Now jump back to the very first line',
+    hint: 'Type gg — two lowercase g characters',
+    start: { l: LINES.length - 1, c: 0 },
+    target: { l: 0, c: 0 },
+    valid: cmd => cmd === 'gg',
+  },
+  {
+    text: 'Move to the end of line 1',
+    hint: 'The dollar sign $ moves to end of line',
+    start: { l: 0, c: 0 },
+    target: { l: 0, c: LINES[0].length - 1 },
+    valid: cmd => cmd === '$',
+  },
+  {
+    text: 'Move back to column 0 (the very start of the line)',
+    hint: 'Zero (0) moves to the absolute start of the line',
+    start: { l: 0, c: LINES[0].length - 1 },
+    target: { l: 0, c: 0 },
+    valid: cmd => cmd === '0',
+  },
+  {
+    text: 'Jump to the first non-whitespace character on line 3',
+    hint: 'The caret ^ skips leading spaces and lands on the first real character',
+    start: { l: 2, c: 0 },
+    target: { l: 2, c: firstNonWs(2) },
+    valid: cmd => cmd === '^',
+  },
+  {
+    text: 'Jump forward one word on line 9',
+    hint: 'Lowercase w jumps to the start of the next word',
+    start: { l: 8, c: 0 },
+    target: { l: 8, c: nextWordStart(8, 0) },
+    valid: cmd => cmd === 'w',
+  },
+  {
+    text: 'Find the next "(" character on line 1',
+    hint: 'f followed by a character finds that character on the current line — try f(',
+    start: { l: 0, c: 0 },
+    target: { l: 0, c: LINES[0].indexOf('(') },
+    valid: cmd => cmd === 'f(',
+  },
+  {
+    text: 'Jump just BEFORE the next ":" on line 1 using t',
+    hint: 't is like f but stops one character before the target — try t:',
+    start: { l: 0, c: 0 },
+    target: { l: 0, c: LINES[0].indexOf(':') - 1 },
+    valid: cmd => cmd === 't:',
+  },
+];
+
+let cursor = { l: 0, c: 0 };
+let score = 0;
+let ci = 0;
+let hintUsed = false;
+
+function esc(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function render() {
+  const numsEl = document.getElementById('line-nums');
+  const linesEl = document.getElementById('code-lines');
+  let numsHTML = '';
+  let linesHTML = '';
+
+  for (let i = 0; i < LINES.length; i++) {
+    const active = i === cursor.l;
+    numsHTML += `<div class="${active ? 'ln-active' : ''}">${i + 1}</div>`;
+
+    const raw = LINES[i];
+    if (active) {
+      const col = Math.min(cursor.c, Math.max(0, raw.length - 1));
+      const before = esc(raw.slice(0, col));
+      const ch = esc(raw[col] !== undefined ? raw[col] : ' ');
+      const after = esc(raw.slice(col + 1));
+      linesHTML += `<div class="code-line active-line">${before}<span class="cursor-char">${ch}</span>${after}</div>`;
+    } else {
+      linesHTML += `<div class="code-line">${esc(raw) || ' '}</div>`;
+    }
+  }
+
+  numsEl.innerHTML = numsHTML;
+  linesEl.innerHTML = linesHTML;
+
+  // scroll active line into view within editor
+  const activeLine = linesEl.children[cursor.l];
+  if (activeLine) activeLine.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+
+  document.getElementById('pos').textContent = `${cursor.l + 1}:${cursor.c + 1}`;
+}
+
+function setFeedback(type, text) {
+  const el = document.getElementById('feedback');
+  el.className = 'feedback ' + type;
+  el.textContent = text;
+}
+
+function loadChallenge(idx) {
+  if (idx >= challenges.length) { showFinish(); return; }
+  const ch = challenges[idx];
+  hintUsed = false;
+  cursor = { ...ch.start };
+  document.getElementById('ch-num').textContent = idx + 1;
+  document.getElementById('ch-text').textContent = ch.text;
+  document.getElementById('progress').style.width = (idx / challenges.length * 100) + '%';
+  document.getElementById('cmd-input').value = '';
+  document.getElementById('prompt').textContent = '';
+  document.getElementById('feedback').className = 'feedback empty';
+  document.getElementById('feedback').textContent = '';
+  render();
+  document.getElementById('cmd-input').focus();
+}
+
+function showHint() {
+  hintUsed = true;
+  setFeedback('hint', challenges[ci].hint);
+}
+
+function submit(cmd) {
+  const ch = challenges[ci];
+  if (ch.valid(cmd)) {
+    cursor = { ...ch.target };
+    render();
+    const earned = !hintUsed;
+    if (earned) score++;
+    document.getElementById('score').textContent = score;
+    setFeedback('success', earned ? 'Correct! +1' : 'Correct! (no point — hint was used)');
+    ci++;
+    setTimeout(() => loadChallenge(ci), 800);
+  } else if (cmd) {
+    setFeedback('error', `"${cmd}" is not right. Try again or press hint.`);
+  }
+  document.getElementById('cmd-input').value = '';
+  document.getElementById('prompt').textContent = '';
+}
+
+function showFinish() {
+  document.getElementById('progress').style.width = '100%';
+  const wrap = document.getElementById('game');
+  const grade = score >= 9 ? 'Perfect.' : score >= 7 ? 'Great job.' : score >= 5 ? 'Good start.' : 'Keep practicing.';
+  wrap.innerHTML = `
+    <div class="finish">
+      <div class="finish-score">${score}/10</div>
+      <div class="finish-label">${grade}</div>
+      <div class="commands-learned">
+        ${[':N','NG','G','gg','$','0','^','w','f{c}','t{c}'].map(c => `<span class="cmd-badge">${c}</span>`).join('')}
+      </div>
+      <button class="play-again" onclick="location.reload()">play again</button>
+    </div>
+  `;
+}
+
+// Input handling
+const input = document.getElementById('cmd-input');
+
+input.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    const val = input.value.trim();
+    const prompt = document.getElementById('prompt').textContent;
+    submit(prompt + val);
+  }
+  if (e.key === 'Escape') {
+    input.value = '';
+    document.getElementById('prompt').textContent = '';
+  }
+});
+
+input.addEventListener('input', () => {
+  const val = input.value;
+  const prompt = document.getElementById('prompt');
+  // detect colon prefix for visual fidelity
+  if (val.startsWith(':') && prompt.textContent !== ':') {
+    prompt.textContent = ':';
+    input.value = val.slice(1);
+  }
+});
+
+document.addEventListener('click', () => input.focus());
+
+// Start
+loadChallenge(0);
+</script>
+</body>
+</html>
