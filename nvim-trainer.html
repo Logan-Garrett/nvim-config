@@ -17,12 +17,11 @@ body {
   align-items: center;
   justify-content: center;
   padding: 20px;
-  gap: 10px;
 }
 
 .game-wrap {
   width: 100%;
-  max-width: 860px;
+  max-width: 880px;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -34,41 +33,14 @@ body {
   align-items: flex-end;
 }
 
-.title {
-  color: #89b4fa;
-  font-size: 18px;
-  letter-spacing: 1px;
-}
+.title { color: #89b4fa; font-size: 18px; letter-spacing: 1px; }
+.subtitle { color: #6c7086; font-size: 11px; margin-top: 2px; }
 
-.subtitle {
-  color: #6c7086;
-  font-size: 11px;
-  margin-top: 2px;
-}
+.score-area { text-align: right; font-size: 12px; color: #6c7086; }
+.score-num  { color: #a6e3a1; font-size: 16px; }
 
-.score-area {
-  text-align: right;
-  font-size: 12px;
-  color: #6c7086;
-}
-
-.score-num {
-  color: #a6e3a1;
-  font-size: 16px;
-}
-
-.progress-bar {
-  height: 2px;
-  background: #313244;
-  border-radius: 2px;
-}
-
-.progress-fill {
-  height: 100%;
-  background: #89b4fa;
-  border-radius: 2px;
-  transition: width 0.4s ease;
-}
+.progress-bar { height: 2px; background: #313244; border-radius: 2px; }
+.progress-fill { height: 100%; background: #89b4fa; border-radius: 2px; transition: width 0.4s ease; }
 
 .challenge-box {
   background: #181825;
@@ -79,21 +51,28 @@ body {
   justify-content: space-between;
   align-items: center;
   gap: 12px;
-  min-height: 52px;
+  min-height: 58px;
 }
 
-.challenge-label {
-  color: #6c7086;
-  font-size: 10px;
+.challenge-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 5px;
+}
+
+.challenge-label { color: #6c7086; font-size: 10px; text-transform: uppercase; letter-spacing: 1.2px; }
+
+.group-badge {
+  font-size: 9px;
   text-transform: uppercase;
-  letter-spacing: 1.2px;
-  margin-bottom: 4px;
+  letter-spacing: 1px;
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-weight: bold;
 }
 
-.challenge-text {
-  color: #f9e2af;
-  font-size: 14px;
-}
+.challenge-text { color: #f9e2af; font-size: 13px; line-height: 1.4; }
 
 .hint-btn {
   background: transparent;
@@ -109,12 +88,7 @@ body {
 }
 .hint-btn:hover { color: #cba6f7; border-color: #cba6f7; }
 
-/* Editor */
-.editor-wrap {
-  border: 1px solid #313244;
-  border-radius: 6px;
-  overflow: hidden;
-}
+.editor-wrap { border: 1px solid #313244; border-radius: 6px; overflow: hidden; }
 
 .tabline {
   background: #181825;
@@ -127,16 +101,11 @@ body {
   gap: 8px;
 }
 
-.tabline-file {
-  color: #cdd6f4;
-  background: #1e1e2e;
-  padding: 2px 10px;
-  border-radius: 3px 3px 0 0;
-}
+.tabline-file { color: #cdd6f4; background: #1e1e2e; padding: 2px 10px; border-radius: 3px 3px 0 0; }
 
 .editor-body {
   display: flex;
-  max-height: 340px;
+  max-height: 300px;
   overflow-y: auto;
   background: #1e1e2e;
   scrollbar-width: thin;
@@ -149,37 +118,25 @@ body {
   text-align: right;
   user-select: none;
   min-width: 44px;
-  line-height: 1.65;
+  line-height: 1.6;
   flex-shrink: 0;
+  border-right: 1px solid #1e1e2e;
 }
 
-.line-nums .ln-active {
-  color: #cdd6f4;
-}
+.ln-active { color: #cdd6f4; }
 
 .code-lines {
   padding: 6px 16px;
   flex: 1;
   white-space: pre;
-  line-height: 1.65;
+  line-height: 1.6;
   overflow-x: auto;
 }
 
-.code-line {
-  display: block;
-}
+.code-line { display: block; }
+.active-line { background: rgba(255,255,255,0.03); }
+.cursor-char { background: #cdd6f4; color: #1e1e2e; border-radius: 1px; }
 
-.cursor-char {
-  background: #cdd6f4;
-  color: #1e1e2e;
-  border-radius: 1px;
-}
-
-.active-line {
-  background: rgba(255,255,255,0.03);
-}
-
-/* Statusline */
 .statusline {
   background: #89b4fa;
   color: #1e1e2e;
@@ -190,7 +147,6 @@ body {
   justify-content: space-between;
 }
 
-/* Cmdline */
 .cmdline {
   background: #1e1e2e;
   border-top: 1px solid #313244;
@@ -200,10 +156,7 @@ body {
   gap: 4px;
 }
 
-.cmdline-prompt {
-  color: #cdd6f4;
-  min-width: 8px;
-}
+.cmdline-prompt { color: #cdd6f4; min-width: 8px; }
 
 #cmd-input {
   background: transparent;
@@ -216,12 +169,8 @@ body {
   caret-color: #89b4fa;
 }
 
-#cmd-input::placeholder {
-  color: #45475a;
-  font-size: 12px;
-}
+#cmd-input::placeholder { color: #45475a; font-size: 12px; }
 
-/* Feedback */
 .feedback {
   font-size: 12px;
   min-height: 26px;
@@ -229,49 +178,29 @@ body {
   border-radius: 4px;
   display: flex;
   align-items: center;
-  gap: 8px;
-  transition: all 0.15s;
 }
 
 .feedback.success { background: #1e3a2a; color: #a6e3a1; border: 1px solid #2a5a3a; }
 .feedback.error   { background: #3a1e1e; color: #f38ba8; border: 1px solid #5a2a2a; }
 .feedback.hint    { background: #2a2a1e; color: #f9e2af; border: 1px solid #5a5a2a; }
-.feedback.empty   { background: transparent; }
+.feedback.empty   { background: transparent; border: none; }
 
-/* Finish screen */
-.finish {
-  text-align: center;
-  padding: 40px 20px;
-}
+/* Finish */
+.finish { text-align: center; padding: 32px 20px; }
+.finish-score { font-size: 52px; color: #a6e3a1; line-height: 1; margin-bottom: 6px; }
+.finish-label { color: #6c7086; font-size: 13px; margin-bottom: 20px; }
 
-.finish-score {
-  font-size: 56px;
-  color: #a6e3a1;
-  line-height: 1;
-  margin-bottom: 8px;
-}
-
-.finish-label {
-  color: #6c7086;
-  font-size: 13px;
-  margin-bottom: 20px;
-}
-
-.commands-learned {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  justify-content: center;
-  margin-bottom: 24px;
-}
+.cmd-groups { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+.cmd-group-row { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; align-items: center; }
+.cmd-group-label { color: #6c7086; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; min-width: 80px; text-align: right; }
 
 .cmd-badge {
   background: #313244;
   color: #89b4fa;
   border: 1px solid #45475a;
-  padding: 3px 10px;
+  padding: 3px 9px;
   border-radius: 4px;
-  font-size: 13px;
+  font-size: 12px;
 }
 
 .play-again {
@@ -294,11 +223,11 @@ body {
   <div class="header">
     <div>
       <div class="title">nvim-navigator</div>
-      <div class="subtitle">learn vim motions interactively</div>
+      <div class="subtitle">learn vim motions — type the command and press Enter</div>
     </div>
     <div class="score-area">
       <div>score</div>
-      <div><span class="score-num" id="score">0</span><span style="color:#45475a"> / 10</span></div>
+      <div><span class="score-num" id="score">0</span><span style="color:#45475a" id="score-denom"> / 34</span></div>
     </div>
   </div>
 
@@ -307,8 +236,11 @@ body {
   </div>
 
   <div class="challenge-box">
-    <div style="flex:1">
-      <div class="challenge-label">challenge <span id="ch-num">1</span> of 10</div>
+    <div style="flex:1; min-width:0">
+      <div class="challenge-meta">
+        <span class="challenge-label">challenge <span id="ch-num">1</span> of <span id="ch-total">34</span></span>
+        <span class="group-badge" id="group-badge"></span>
+      </div>
       <div class="challenge-text" id="ch-text"></div>
     </div>
     <button class="hint-btn" onclick="showHint()">hint</button>
@@ -319,7 +251,7 @@ body {
       <span class="tabline-file">fibonacci.py</span>
       <span style="margin-left:auto;font-size:11px">python</span>
     </div>
-    <div class="editor-body" id="editor-body">
+    <div class="editor-body">
       <div class="line-nums" id="line-nums"></div>
       <div class="code-lines" id="code-lines"></div>
     </div>
@@ -337,243 +269,485 @@ body {
 </div>
 
 <script>
+// ─────────────────────────────────────────────────────────────────────────────
+// Editor content
+// ─────────────────────────────────────────────────────────────────────────────
 const LINES = [
-  "def calculate_fibonacci(n):",
-  "    if n <= 0:",
-  "        return []",
-  "    elif n == 1:",
-  "        return [0]",
-  "    elif n == 2:",
-  "        return [0, 1]",
-  "",
-  "    sequence = [0, 1]",
-  "    for i in range(2, n):",
-  "        next_val = sequence[i-1] + sequence[i-2]",
-  "        sequence.append(next_val)",
-  "",
-  "    return sequence",
-  "",
-  "def is_prime(number):",
-  "    if number < 2:",
-  "        return False",
-  "    for divisor in range(2, int(number**0.5) + 1):",
-  "        if number % divisor == 0:",
-  "            return False",
-  "    return True",
-  "",
-  "class DataProcessor:",
-  "    def __init__(self, data):",
-  "        self.data = data",
-  "        self.results = []",
-  "",
-  "    def process(self):",
-  "        for item in self.data:",
+  "def calculate_fibonacci(n):",          // 0  — len 27, ( at 23, ) at 25, : at 26
+  "    if n <= 0:",                        // 1
+  "        return []",                     // 2  — "return" at col 8
+  "    elif n == 1:",                      // 3
+  "        return [0]",                    // 4  — "return" at col 8
+  "    elif n == 2:",                      // 5
+  "        return [0, 1]",                 // 6
+  "",                                      // 7  — blank (paragraph boundary)
+  "    sequence = [0, 1]",                 // 8  — "sequence" at 4, "=" at 13, "[" at 15
+  "    for i in range(2, n):",             // 9
+  "        next_val = sequence[i-1] + sequence[i-2]", // 10
+  "        sequence.append(next_val)",     // 11
+  "",                                      // 12 — blank
+  "    return sequence",                   // 13
+  "",                                      // 14 — blank
+  "def is_prime(number):",                 // 15 — "is_prime" at 4, "number" at 13, len 21
+  "    if number < 2:",                    // 16
+  "        return False",                  // 17
+  "    for divisor in range(2, int(number**0.5) + 1):", // 18 — "(" at 24 and 31, "number" at 32
+  "        if number % divisor == 0:",     // 19
+  "            return False",              // 20
+  "    return True",                       // 21
+  "",                                      // 22 — blank
+  "class DataProcessor:",                  // 23
+  "    def __init__(self, data):",         // 24
+  "        self.data = data",              // 25
+  "        self.results = []",             // 26
+  "",                                      // 27 — blank
+  "    def process(self):",                // 28
+  "        for item in self.data:",        // 29
 ];
 
-// find first non-whitespace col on a line
-function firstNonWs(lineIdx) {
-  const s = LINES[lineIdx];
-  const i = s.search(/\S/);
-  return i === -1 ? 0 : i;
-}
+// ─────────────────────────────────────────────────────────────────────────────
+// Group styling
+// ─────────────────────────────────────────────────────────────────────────────
+const GROUP_STYLE = {
+  'line jump':   { bg: '#1e3352', color: '#89b4fa' },
+  'line nav':    { bg: '#1e3040', color: '#74c7ec' },
+  'word':        { bg: '#1e3328', color: '#a6e3a1' },
+  'find':        { bg: '#3a2a1e', color: '#fab387' },
+  'structural':  { bg: '#2a2040', color: '#cba6f7' },
+  'search':      { bg: '#2a2a1e', color: '#f9e2af' },
+};
 
-// next word start (w motion)
-function nextWordStart(lineIdx, col) {
-  const s = LINES[lineIdx];
-  let i = col;
-  if (/\w/.test(s[i])) {
-    while (i < s.length && /\w/.test(s[i])) i++;
-  } else if (/\S/.test(s[i])) {
-    while (i < s.length && /[^\w\s]/.test(s[i])) i++;
-  }
-  while (i < s.length && /\s/.test(s[i])) i++;
-  return Math.min(i, s.length - 1);
-}
-
+// ─────────────────────────────────────────────────────────────────────────────
+// Challenges — 34 total
+//   Positions verified against LINES array above.
+//   Key line 8:  "    sequence = [0, 1]"
+//     cols: 0-3=' ', 4-11="sequence", 12=' ', 13='=', 14=' ', 15='[', 16='0', 17=',', 18=' ', 19='1', 20=']'
+//   Key line 0:  "def calculate_fibonacci(n):"
+//     cols: 0-2="def", 3=' ', 4-22="calculate_fibonacci", 23='(', 24='n', 25=')', 26=':'
+//   Key line 18: "    for divisor in range(2, int(number**0.5) + 1):"
+//     first '(' at 24, second '(' at 31, "number" at 32-37
+//   Key line 15: "def is_prime(number):"
+//     "is_prime" at 4, "number" at 13, len=21 (last char ':' at 20)
+// ─────────────────────────────────────────────────────────────────────────────
 const challenges = [
+
+  // ── LINE JUMPING (7) ────────────────────────────────────────────────────────
   {
+    group: 'line jump',
     text: 'Jump to line 10 using a colon command',
-    hint: 'In normal mode, type :10 then press Enter',
-    start: { l: 0, c: 0 },
-    target: { l: 9, c: 0 },
+    hint: 'Type :10 and press Enter — colon opens the command line',
+    start: {l:0,c:0}, target: {l:9,c:0},
     valid: cmd => cmd === ':10',
   },
   {
-    text: 'Jump to line 17 using the G command',
-    hint: 'Type 17G — a number followed by capital G',
-    start: { l: 0, c: 0 },
-    target: { l: 16, c: 0 },
+    group: 'line jump',
+    text: 'Jump to line 17 — use the G form this time',
+    hint: 'Type a number then capital G: 17G',
+    start: {l:0,c:0}, target: {l:16,c:0},
     valid: cmd => cmd === '17G',
   },
   {
+    group: 'line jump',
     text: 'Go to the very last line of the file',
-    hint: 'Capital G with no number goes to the last line',
-    start: { l: 0, c: 0 },
-    target: { l: LINES.length - 1, c: 0 },
+    hint: 'Capital G with no number jumps to the last line',
+    start: {l:0,c:0}, target: {l:29,c:0},
     valid: cmd => cmd === 'G',
   },
   {
-    text: 'Now jump back to the very first line',
-    hint: 'Type gg — two lowercase g characters',
-    start: { l: LINES.length - 1, c: 0 },
-    target: { l: 0, c: 0 },
+    group: 'line jump',
+    text: 'Jump back to the very first line',
+    hint: 'Two lowercase g characters: gg',
+    start: {l:29,c:0}, target: {l:0,c:0},
     valid: cmd => cmd === 'gg',
   },
   {
+    group: 'line jump',
+    text: 'Move DOWN 5 lines using a count prefix',
+    hint: 'Prefix j (down) with a number: 5j',
+    start: {l:0,c:0}, target: {l:5,c:0},
+    valid: cmd => cmd === '5j',
+  },
+  {
+    group: 'line jump',
+    text: 'Move UP 3 lines using a count prefix',
+    hint: 'Prefix k (up) with a number: 3k',
+    start: {l:8,c:0}, target: {l:5,c:0},
+    valid: cmd => cmd === '3k',
+  },
+  {
+    group: 'line jump',
+    text: 'Jump to line 25 (the __init__ method) — use a colon command',
+    hint: ':25 then Enter',
+    start: {l:0,c:0}, target: {l:24,c:0},
+    valid: cmd => cmd === ':25',
+  },
+
+  // ── LINE NAVIGATION (4) ─────────────────────────────────────────────────────
+  {
+    group: 'line nav',
     text: 'Move to the end of line 1',
-    hint: 'The dollar sign $ moves to end of line',
-    start: { l: 0, c: 0 },
-    target: { l: 0, c: LINES[0].length - 1 },
+    hint: 'Dollar sign $ moves to the last character on the line',
+    start: {l:0,c:0}, target: {l:0,c:26},
     valid: cmd => cmd === '$',
   },
   {
-    text: 'Move back to column 0 (the very start of the line)',
-    hint: 'Zero (0) moves to the absolute start of the line',
-    start: { l: 0, c: LINES[0].length - 1 },
-    target: { l: 0, c: 0 },
+    group: 'line nav',
+    text: 'Move back to column 0 — the absolute start of the line',
+    hint: 'Zero (0) always goes to column 0, ignoring whitespace',
+    start: {l:0,c:26}, target: {l:0,c:0},
     valid: cmd => cmd === '0',
   },
   {
-    text: 'Jump to the first non-whitespace character on line 3',
-    hint: 'The caret ^ skips leading spaces and lands on the first real character',
-    start: { l: 2, c: 0 },
-    target: { l: 2, c: firstNonWs(2) },
+    group: 'line nav',
+    text: 'Skip the leading spaces on line 3 and land on the first real character',
+    hint: 'Caret ^ jumps to the first non-whitespace character',
+    start: {l:2,c:0}, target: {l:2,c:8},
     valid: cmd => cmd === '^',
   },
   {
-    text: 'Jump forward one word on line 9',
-    hint: 'Lowercase w jumps to the start of the next word',
-    start: { l: 8, c: 0 },
-    target: { l: 8, c: nextWordStart(8, 0) },
+    group: 'line nav',
+    text: 'Move to the end of line 16 (def is_prime) — same motion as before',
+    hint: 'Dollar sign $ — works on any line',
+    start: {l:15,c:0}, target: {l:15,c:20},
+    valid: cmd => cmd === '$',
+  },
+
+  // ── WORD MOTIONS (8) ────────────────────────────────────────────────────────
+  {
+    group: 'word',
+    text: 'Jump forward one word on line 9 (cursor starts at column 0)',
+    hint: 'Lowercase w moves to the START of the next word',
+    start: {l:8,c:0}, target: {l:8,c:4},
     valid: cmd => cmd === 'w',
   },
   {
-    text: 'Find the next "(" character on line 1',
-    hint: 'f followed by a character finds that character on the current line — try f(',
-    start: { l: 0, c: 0 },
-    target: { l: 0, c: LINES[0].indexOf('(') },
+    group: 'word',
+    text: 'Jump forward one word on line 1 — cursor is on "def"',
+    hint: 'w again — same motion, reinforcing the pattern',
+    start: {l:0,c:0}, target: {l:0,c:4},
+    valid: cmd => cmd === 'w',
+  },
+  {
+    group: 'word',
+    text: 'Jump backward one word on line 9 — cursor is sitting on "="',
+    hint: 'Lowercase b moves to the START of the previous word',
+    start: {l:8,c:13}, target: {l:8,c:4},
+    valid: cmd => cmd === 'b',
+  },
+  {
+    group: 'word',
+    text: 'Jump to the END of the current word "sequence" on line 9',
+    hint: 'Lowercase e moves to the END of the current (or next) word',
+    start: {l:8,c:4}, target: {l:8,c:11},
+    valid: cmd => cmd === 'e',
+  },
+  {
+    group: 'word',
+    text: 'Cursor is on "=" (line 9). Jump to the end of the PREVIOUS word.',
+    hint: 'ge moves backward to the END of the word before the cursor',
+    start: {l:8,c:13}, target: {l:8,c:11},
+    valid: cmd => cmd === 'ge',
+  },
+  {
+    group: 'word',
+    text: 'From "sequence" on line 9, jump forward one WORD — treat "=" as a single unit',
+    hint: 'Capital W jumps by whitespace-separated chunks, ignoring punctuation word boundaries',
+    start: {l:8,c:4}, target: {l:8,c:13},
+    valid: cmd => cmd === 'W',
+  },
+  {
+    group: 'word',
+    text: 'From "[" on line 9, jump back one WORD',
+    hint: 'Capital B jumps to the start of the previous non-space sequence',
+    start: {l:8,c:15}, target: {l:8,c:13},
+    valid: cmd => cmd === 'B',
+  },
+  {
+    group: 'word',
+    text: 'From "[" on line 9, jump to the END of the current WORD — "[0," counts as one unit',
+    hint: 'Capital E goes to the last char of the current non-space sequence',
+    start: {l:8,c:15}, target: {l:8,c:17},
+    valid: cmd => cmd === 'E',
+  },
+
+  // ── FIND ON LINE (8) ────────────────────────────────────────────────────────
+  {
+    group: 'find',
+    text: 'Find the first "(" on line 1',
+    hint: 'f followed by a character finds it forward on the current line: f(',
+    start: {l:0,c:0}, target: {l:0,c:23},
     valid: cmd => cmd === 'f(',
   },
   {
-    text: 'Jump just BEFORE the next ":" on line 1 using t',
-    hint: 't is like f but stops one character before the target — try t:',
-    start: { l: 0, c: 0 },
-    target: { l: 0, c: LINES[0].indexOf(':') - 1 },
+    group: 'find',
+    text: 'Find "=" on line 9 using f — different character, same motion',
+    hint: 'f works with any character: f=',
+    start: {l:8,c:0}, target: {l:8,c:13},
+    valid: cmd => cmd === 'f=',
+  },
+  {
+    group: 'find',
+    text: 'Jump just BEFORE the ":" at the end of line 1',
+    hint: 't is like f but stops one character short of the target: t:',
+    start: {l:0,c:0}, target: {l:0,c:25},
     valid: cmd => cmd === 't:',
+  },
+  {
+    group: 'find',
+    text: 'Find ")" searching BACKWARD on line 1 — cursor starts at the end',
+    hint: 'Capital F searches backward for a character: F)',
+    start: {l:0,c:26}, target: {l:0,c:25},
+    valid: cmd => cmd === 'F)',
+  },
+  {
+    group: 'find',
+    text: 'Jump to just AFTER "(" searching backward on line 1 — cursor at the end',
+    hint: 'Capital T searches backward but stops one char after the target: T(',
+    start: {l:0,c:26}, target: {l:0,c:24},
+    valid: cmd => cmd === 'T(',
+  },
+  {
+    group: 'find',
+    text: 'Context: you just did f( on line 19 and landed at the first "(" (col 24). Repeat forward to reach the second "(".',
+    hint: 'Semicolon ; repeats the last f/F/t/T in the same direction',
+    start: {l:18,c:24}, target: {l:18,c:31},
+    valid: cmd => cmd === ';',
+  },
+  {
+    group: 'find',
+    text: 'Context: cursor is on the second "(" on line 19 (col 31). Go back to the first "(" by reversing the repeat.',
+    hint: 'Comma , repeats the last f/F/t/T in the opposite direction',
+    start: {l:18,c:31}, target: {l:18,c:24},
+    valid: cmd => cmd === ',',
+  },
+  {
+    group: 'find',
+    text: 'Find "i" on line 19 (forward from the start) — "divisor" starts with d-i',
+    hint: 'f followed by the character: fi',
+    start: {l:18,c:0}, target: {l:18,c:9},
+    valid: cmd => cmd === 'fi',
+  },
+
+  // ── STRUCTURAL (3) ──────────────────────────────────────────────────────────
+  {
+    group: 'structural',
+    text: 'Jump forward to the next blank line (paragraph boundary)',
+    hint: '} jumps to the next empty line',
+    start: {l:0,c:0}, target: {l:7,c:0},
+    valid: cmd => cmd === '}',
+  },
+  {
+    group: 'structural',
+    text: 'Jump backward to the previous blank line',
+    hint: '{ jumps to the previous empty line',
+    start: {l:9,c:0}, target: {l:7,c:0},
+    valid: cmd => cmd === '{',
+  },
+  {
+    group: 'structural',
+    text: 'Cursor is on "(" at line 1 col 23. Jump to its matching ")".',
+    hint: '% jumps between matching (), [], and {} pairs',
+    start: {l:0,c:23}, target: {l:0,c:25},
+    valid: cmd => cmd === '%',
+  },
+
+  // ── SEARCH (6) ──────────────────────────────────────────────────────────────
+  {
+    group: 'search',
+    text: 'Search forward for "is_prime"',
+    hint: 'Type /is_prime and press Enter — / opens forward search',
+    start: {l:0,c:0}, target: {l:15,c:4},
+    valid: cmd => cmd === '/is_prime',
+  },
+  {
+    group: 'search',
+    text: 'Search FORWARD for the word under cursor — cursor is on "number" (line 16, col 13)',
+    hint: '* searches forward for the exact word under the cursor — no typing needed',
+    start: {l:15,c:13}, target: {l:18,c:32},
+    valid: cmd => cmd === '*',
+  },
+  {
+    group: 'search',
+    text: 'Search BACKWARD for the word under cursor — cursor is on "number" (line 19, col 32)',
+    hint: '# is like * but searches backward',
+    start: {l:18,c:32}, target: {l:15,c:13},
+    valid: cmd => cmd === '#',
+  },
+  {
+    group: 'search',
+    text: 'Context: you searched for "return" and are on the match at line 3. Jump to the NEXT match.',
+    hint: 'n repeats the last search moving forward',
+    start: {l:2,c:8}, target: {l:4,c:8},
+    valid: cmd => cmd === 'n',
+  },
+  {
+    group: 'search',
+    text: 'Context: cursor is on the "return" match on line 5. Jump to the PREVIOUS match.',
+    hint: 'N repeats the last search in reverse',
+    start: {l:4,c:8}, target: {l:2,c:8},
+    valid: cmd => cmd === 'N',
+  },
+  {
+    group: 'search',
+    text: 'Search backward for "def" — start from the bottom of the file',
+    hint: '? opens backward search — type ?def and press Enter',
+    start: {l:29,c:0}, target: {l:28,c:4},
+    valid: cmd => cmd === '?def',
   },
 ];
 
-let cursor = { l: 0, c: 0 };
+// ─────────────────────────────────────────────────────────────────────────────
+// State
+// ─────────────────────────────────────────────────────────────────────────────
+const TOTAL = challenges.length;
+let cursor = {l:0, c:0};
 let score = 0;
 let ci = 0;
 let hintUsed = false;
 
+document.getElementById('ch-total').textContent = TOTAL;
+document.getElementById('score-denom').textContent = ' / ' + TOTAL;
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Render
+// ─────────────────────────────────────────────────────────────────────────────
 function esc(s) {
   return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
 function render() {
-  const numsEl = document.getElementById('line-nums');
-  const linesEl = document.getElementById('code-lines');
-  let numsHTML = '';
-  let linesHTML = '';
+  const numsEl   = document.getElementById('line-nums');
+  const linesEl  = document.getElementById('code-lines');
+  let numsHTML   = '';
+  let linesHTML  = '';
 
   for (let i = 0; i < LINES.length; i++) {
     const active = i === cursor.l;
-    numsHTML += `<div class="${active ? 'ln-active' : ''}">${i + 1}</div>`;
+    numsHTML += `<div class="${active ? 'ln-active' : ''}">${i+1}</div>`;
 
     const raw = LINES[i];
     if (active) {
-      const col = Math.min(cursor.c, Math.max(0, raw.length - 1));
+      const col    = Math.min(cursor.c, Math.max(0, raw.length - 1));
       const before = esc(raw.slice(0, col));
-      const ch = esc(raw[col] !== undefined ? raw[col] : ' ');
-      const after = esc(raw.slice(col + 1));
-      linesHTML += `<div class="code-line active-line">${before}<span class="cursor-char">${ch}</span>${after}</div>`;
+      const ch     = esc(raw[col] !== undefined ? raw[col] : ' ');
+      const after  = esc(raw.slice(col + 1));
+      linesHTML   += `<div class="code-line active-line">${before}<span class="cursor-char">${ch}</span>${after}</div>`;
     } else {
-      linesHTML += `<div class="code-line">${esc(raw) || ' '}</div>`;
+      linesHTML   += `<div class="code-line">${esc(raw) || ' '}</div>`;
     }
   }
 
-  numsEl.innerHTML = numsHTML;
+  numsEl.innerHTML  = numsHTML;
   linesEl.innerHTML = linesHTML;
 
-  // scroll active line into view within editor
-  const activeLine = linesEl.children[cursor.l];
-  if (activeLine) activeLine.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-
-  document.getElementById('pos').textContent = `${cursor.l + 1}:${cursor.c + 1}`;
+  linesEl.children[cursor.l]?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  document.getElementById('pos').textContent = `${cursor.l+1}:${cursor.c+1}`;
 }
 
-function setFeedback(type, text) {
-  const el = document.getElementById('feedback');
-  el.className = 'feedback ' + type;
-  el.textContent = text;
-}
-
+// ─────────────────────────────────────────────────────────────────────────────
+// Challenge lifecycle
+// ─────────────────────────────────────────────────────────────────────────────
 function loadChallenge(idx) {
-  if (idx >= challenges.length) { showFinish(); return; }
-  const ch = challenges[idx];
-  hintUsed = false;
-  cursor = { ...ch.start };
-  document.getElementById('ch-num').textContent = idx + 1;
-  document.getElementById('ch-text').textContent = ch.text;
-  document.getElementById('progress').style.width = (idx / challenges.length * 100) + '%';
-  document.getElementById('cmd-input').value = '';
-  document.getElementById('prompt').textContent = '';
-  document.getElementById('feedback').className = 'feedback empty';
-  document.getElementById('feedback').textContent = '';
+  if (idx >= TOTAL) { showFinish(); return; }
+
+  const ch      = challenges[idx];
+  hintUsed      = false;
+  cursor        = {...ch.start};
+
+  document.getElementById('ch-num').textContent    = idx + 1;
+  document.getElementById('ch-text').textContent   = ch.text;
+  document.getElementById('progress').style.width  = (idx / TOTAL * 100) + '%';
+  document.getElementById('cmd-input').value       = '';
+  document.getElementById('prompt').textContent    = '';
+  document.getElementById('feedback').className    = 'feedback empty';
+  document.getElementById('feedback').textContent  = '';
+
+  const badge = document.getElementById('group-badge');
+  const style = GROUP_STYLE[ch.group] || {};
+  badge.textContent        = ch.group;
+  badge.style.background   = style.bg    || '#313244';
+  badge.style.color        = style.color || '#cdd6f4';
+
   render();
   document.getElementById('cmd-input').focus();
 }
 
 function showHint() {
   hintUsed = true;
-  setFeedback('hint', challenges[ci].hint);
+  const fb = document.getElementById('feedback');
+  fb.className = 'feedback hint';
+  fb.textContent = challenges[ci].hint;
 }
 
 function submit(cmd) {
+  if (!cmd) return;
   const ch = challenges[ci];
+  const fb = document.getElementById('feedback');
+
   if (ch.valid(cmd)) {
-    cursor = { ...ch.target };
+    cursor = {...ch.target};
     render();
     const earned = !hintUsed;
     if (earned) score++;
     document.getElementById('score').textContent = score;
-    setFeedback('success', earned ? 'Correct! +1' : 'Correct! (no point — hint was used)');
+    fb.className   = 'feedback success';
+    fb.textContent = earned ? 'Correct!  +1' : 'Correct!  (no point — hint used)';
     ci++;
-    setTimeout(() => loadChallenge(ci), 800);
-  } else if (cmd) {
-    setFeedback('error', `"${cmd}" is not right. Try again or press hint.`);
+    setTimeout(() => loadChallenge(ci), 750);
+  } else {
+    fb.className   = 'feedback error';
+    fb.textContent = `"${cmd}" is not right — try again or press hint`;
   }
-  document.getElementById('cmd-input').value = '';
+  document.getElementById('cmd-input').value  = '';
   document.getElementById('prompt').textContent = '';
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Finish screen
+// ─────────────────────────────────────────────────────────────────────────────
 function showFinish() {
   document.getElementById('progress').style.width = '100%';
-  const wrap = document.getElementById('game');
-  const grade = score >= 9 ? 'Perfect.' : score >= 7 ? 'Great job.' : score >= 5 ? 'Good start.' : 'Keep practicing.';
-  wrap.innerHTML = `
+  const pct   = score / TOTAL;
+  const grade = pct >= 0.9 ? 'Excellent.' : pct >= 0.7 ? 'Good work.' : pct >= 0.5 ? 'Keep practicing.' : 'Need more reps.';
+
+  const groups = {
+    'line jump':  [':N', 'NG', 'G', 'gg', 'Nj', 'Nk'],
+    'line nav':   ['$', '0', '^'],
+    'word':       ['w', 'b', 'e', 'ge', 'W', 'B', 'E'],
+    'find':       ['f{c}', 't{c}', 'F{c}', 'T{c}', ';', ','],
+    'structural': ['}', '{', '%'],
+    'search':     ['/', '*', '#', 'n', 'N', '?'],
+  };
+
+  const groupsHTML = Object.entries(groups).map(([name, cmds]) => {
+    const s = GROUP_STYLE[name] || {};
+    return `
+      <div class="cmd-group-row">
+        <span class="cmd-group-label" style="color:${s.color || '#6c7086'}">${name}</span>
+        ${cmds.map(c => `<span class="cmd-badge" style="border-color:${s.color||'#45475a'};color:${s.color||'#89b4fa'}">${c}</span>`).join('')}
+      </div>`;
+  }).join('');
+
+  document.getElementById('game').innerHTML = `
     <div class="finish">
-      <div class="finish-score">${score}/10</div>
+      <div class="finish-score">${score}/${TOTAL}</div>
       <div class="finish-label">${grade}</div>
-      <div class="commands-learned">
-        ${[':N','NG','G','gg','$','0','^','w','f{c}','t{c}'].map(c => `<span class="cmd-badge">${c}</span>`).join('')}
-      </div>
+      <div class="cmd-groups">${groupsHTML}</div>
       <button class="play-again" onclick="location.reload()">play again</button>
     </div>
   `;
 }
 
-// Input handling
+// ─────────────────────────────────────────────────────────────────────────────
+// Input
+// ─────────────────────────────────────────────────────────────────────────────
 const input = document.getElementById('cmd-input');
 
-input.addEventListener('keydown', (e) => {
+input.addEventListener('keydown', e => {
   if (e.key === 'Enter') {
     e.preventDefault();
-    const val = input.value.trim();
     const prompt = document.getElementById('prompt').textContent;
-    submit(prompt + val);
+    submit(prompt + input.value.trim());
   }
   if (e.key === 'Escape') {
     input.value = '';
@@ -582,18 +756,20 @@ input.addEventListener('keydown', (e) => {
 });
 
 input.addEventListener('input', () => {
-  const val = input.value;
+  const val    = input.value;
   const prompt = document.getElementById('prompt');
-  // detect colon prefix for visual fidelity
-  if (val.startsWith(':') && prompt.textContent !== ':') {
-    prompt.textContent = ':';
-    input.value = val.slice(1);
+  // Show : or / as a prefix like real vim does
+  if ((val.startsWith(':') || val.startsWith('/') || val.startsWith('?')) && prompt.textContent === '') {
+    prompt.textContent = val[0];
+    input.value        = val.slice(1);
   }
 });
 
 document.addEventListener('click', () => input.focus());
 
-// Start
+// ─────────────────────────────────────────────────────────────────────────────
+// Boot
+// ─────────────────────────────────────────────────────────────────────────────
 loadChallenge(0);
 </script>
 </body>
